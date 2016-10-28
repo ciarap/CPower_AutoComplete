@@ -1,21 +1,20 @@
 package algorithms;
 
-import java.util.List;
 import java.util.Scanner;
 
-public class AutoCompleteAPI {
+public class AutoCompleteDriver {
 
 	private Scanner input = new Scanner(System.in);
 	private static BruteAutoComplete brute;
 	private int autoCompleteMethod;
 
 	public static void main(String[] args) throws Exception {
-		AutoCompleteAPI api = new AutoCompleteAPI();
+		AutoCompleteDriver driver = new AutoCompleteDriver();
 		brute=new BruteAutoComplete();
-		api.run();
+		driver.run();
 
 	}
-	public AutoCompleteAPI() {
+	public AutoCompleteDriver() {
 		input = new Scanner(System.in);
 
 
