@@ -10,9 +10,9 @@ public class AutoCompleteAPI {
 	private int autoCompleteMethod;
 
 	public static void main(String[] args) throws Exception {
-		AutoCompleteAPI app = new AutoCompleteAPI();
+		AutoCompleteAPI api = new AutoCompleteAPI();
 		brute=new BruteAutoComplete();
-		app.run();
+		api.run();
 
 	}
 	public AutoCompleteAPI() {
@@ -26,9 +26,9 @@ public class AutoCompleteAPI {
 		while(autoCompleteMethod!=3){
 			switch (autoCompleteMethod){
 			case 1: 
-                 brute.bruteRun();
+                 brute.bruteRun(getSuggestionNo());
 				break;
-			case 2:
+			case 2: System.out.println("Quick method");
 				break;
 			case 3: System.exit(0);
 			input.close();
@@ -56,5 +56,25 @@ public class AutoCompleteAPI {
 		}
 		return autoCompleteMethod;
 	}
+	public int getSuggestionNo(){
+		System.out.println("Please enter how many suggestions you want returned in this program:"  );
+		int suggestionsNumber;
+		try {
+			suggestionsNumber=input.nextInt();
+			while (suggestionsNumber <=0) {   // must get positive value
+				System.out.println("---Invalid choice,please choose again!---");
+				System.out.print("==>>");
+				suggestionsNumber=input.nextInt();
+			}
+		} catch (Exception e) {      // if input other than integer is entered
+			System.out.println("---Invalid choice,please choose again!---");
+			System.out.println("    ---Press any key to continue---");
+			input.nextLine();
+			input.nextLine();
+			suggestionsNumber=getSuggestionNo();
+		}
+		return suggestionsNumber;
+	}
+
 
 }
