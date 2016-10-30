@@ -24,14 +24,18 @@ public class TermTest
 
 
 	@Test
-	public void testCreateAndGetters()
+	public void testCreate()
 	{
 		assertEquals (10.0, term1.getWeight(),0.001);
 		assertEquals ("word1",term1.getWord());
 
-		Term invalidTerm3= new Term("-3","word3");
-		assertEquals (00, invalidTerm3.getWeight(),0.001);
-		assertEquals ("word3",invalidTerm3.getWord()); 
+		Term invalidTerm1= new Term("-3","word3");
+		assertEquals (0.0, invalidTerm1.getWeight(),0.001);
+		assertEquals ("word3",invalidTerm1.getWord()); 
+		
+		Term invalidTerm2= new Term(null,null);
+		assertEquals (0.0, invalidTerm2.getWeight(),0.001);
+		assertEquals ("empty",invalidTerm2.getWord()); 
 	}
 
 	@Test 

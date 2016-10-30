@@ -6,6 +6,10 @@ public class Term {
 	private String word;
 
 	public Term(String weight, String word)throws IllegalArgumentException {
+		if (weight==null || word==null){
+			weight="0";
+			word="empty";
+		}
 		double weightDouble=Double.parseDouble(weight.trim());
 		if(weightDouble>=0)
 			this.weight = weightDouble;

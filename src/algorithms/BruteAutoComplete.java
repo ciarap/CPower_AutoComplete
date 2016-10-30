@@ -10,9 +10,6 @@ import java.util.Scanner;
 public class BruteAutoComplete  implements AutoComplete {
 
 	private List<Term> terms=new ArrayList<Term>();
-	private  List<String> matches=new ArrayList<String>();
-	private  int option=0;
-	private  String prefix;
 	private  Scanner input= new Scanner(System.in);
 	
 	public List<Term> getTerms() {
@@ -20,46 +17,24 @@ public class BruteAutoComplete  implements AutoComplete {
 	}
 
 	public void setTerms(List<Term> terms) {
-		this.terms = terms;
+		if (terms.size()!=0){
+			this.terms = terms;
+		}
 	}
 
-	public List<String> getMatches() {
-		return matches;
-	}
-
-	public void setMatches(List<String> matches) {
-		this.matches = matches;
-	}
-
-	public int getOption() {
-		return option;
-	}
-
-	public void setOption(int option) {
-		this.option = option;
-	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-
-	
 	public BruteAutoComplete() throws Exception {
 		readUrl();
 	}
 	
 	public void bruteRun(int suggestionNo) throws Exception{
-		option=mainMenu();
+		List<String> matches=new ArrayList<String>();
+		int option=mainMenu();
 		while(option!=2){
 			switch (option){
 			case 1: 
 				System.out.println("Please enter a prefix to search for:"  );
 				input.nextLine();
-				prefix=input.nextLine().toLowerCase();
+				String prefix=input.nextLine().toLowerCase();
 				matches=(List<String>) matches(prefix,suggestionNo);
 				if(matches.size()!=0){
 					System.out.println("Did you mean..");
@@ -87,6 +62,7 @@ public class BruteAutoComplete  implements AutoComplete {
 	public int mainMenu(){
 		System.out.println(" BRUTE FORCE AUTOCOMPLETE PROGRAM \n---------------------------");
 		System.out.println(" Please choose an option: \n  1) Search a prefix\n  2) Exit to main menu");
+		int option;
 		try {
 			option = input.nextInt();
 			while (option < 1 || option > 2) {   // must get option in the menu range
@@ -133,7 +109,8 @@ public class BruteAutoComplete  implements AutoComplete {
 	public double weightOf(String term) {
 		double weight=0.0;
 		for (Term termA:terms){
-			if (termA.getWord()==term){
+			if (termA.getWord().compareTo(term)==0)
+					{
 				weight= termA.getWeight();
 			}
 		}
@@ -142,11 +119,20 @@ public class BruteAutoComplete  implements AutoComplete {
 
 	@Override
 	public String bestMatch(String prefix) {
-		return  matches.get(0);
+		String bestmatch="";
+		for (Term term: terms){
+			if (term.getWord().startsWith(prefix)){
+				bestmatch=term.getWord();
+			return bestmatch;
+			}
+		}
+		return bestmatch;	
+		
 	}
 
 	@Override
 	public Iterable<String> matches(String prefix, int k){
+		List<String> matches=new ArrayList<String>();
 		for (Term term: terms){
 			if (term.getWord().startsWith(prefix)){
 				matches.add(term.getWord());
@@ -154,16 +140,15 @@ public class BruteAutoComplete  implements AutoComplete {
 		}
 
 		if(matches.size()>k){
-			return matches.subList(0, k);
+			matches=matches.subList(0, k);
 		}
 		else if (matches.size()==0){
 			System.out.println("There are no matches for this prefix");
-			return matches;
-
+			
 		}
-		else {
-			return matches;
-		}
+		
+		return matches;
+		
 	}
 	public void createTerm(String weight,String word){
 		Term term= new Term(weight,word);
