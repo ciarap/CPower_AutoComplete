@@ -26,9 +26,9 @@ public class QuickAutoComplete implements AutoComplete{
 	}
 
 	public void quickRun(int suggestionNo) throws Exception{
-		sortAlphabetically(terms);
 		int option=mainMenu();
 		while(option!=2){
+			sortAlphabetically(terms);
 			switch (option){
 			case 1: 
 				Iterator<String> matches = null;
@@ -201,7 +201,6 @@ public class QuickAutoComplete implements AutoComplete{
 
 		while(high >= low) {
 			int middle = (low + high) / 2;
-
 			if(terms.get(middle).getWord().startsWith(key)) {
 				int findStartBoxIndex=middle;
 				while(terms.get(findStartBoxIndex).getWord().startsWith(key)){
