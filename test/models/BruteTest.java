@@ -10,9 +10,7 @@ import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import algorithms.AutoCompleteDriver;
-import algorithms.BruteAutoComplete;
-import algorithms.Term;
+import controllers.AutoCompleteDriver;
 
 
 public class BruteTest {
@@ -74,6 +72,9 @@ public class BruteTest {
 		brute.createTerm("20", "second");
 		assertEquals(2,brute.getTerms().size());
 		assertEquals("second",brute.getTerms().get(1).getWord());
+		
+		brute.createTerm("20", "second");
+		assertEquals(2,brute.getTerms().size());
 		
 	}
 	

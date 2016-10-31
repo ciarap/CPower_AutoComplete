@@ -8,8 +8,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import algorithms.Term;
-
 public class TermTest
 {
 	Term term1;
@@ -28,14 +26,7 @@ public class TermTest
 	{
 		assertEquals (10.0, term1.getWeight(),0.001);
 		assertEquals ("word1",term1.getWord());
-
-		Term invalidTerm1= new Term("-3","word3");
-		assertEquals (0.0, invalidTerm1.getWeight(),0.001);
-		assertEquals ("word3",invalidTerm1.getWord()); 
-		
-		Term invalidTerm2= new Term(null,null);
-		assertEquals (0.0, invalidTerm2.getWeight(),0.001);
-		assertEquals ("empty",invalidTerm2.getWord()); 
+ 
 	}
 
 	@Test 
@@ -43,18 +34,14 @@ public class TermTest
 		assertEquals(20.0, term2.getWeight(),0.001);
 		term2.setWeight(25.0);
 		assertEquals(25.0, term2.getWeight(),0.001);
-		
-		term2.setWeight(-1.0);
-		assertEquals(25.0, term2.getWeight(),0.001);
+
 	}
 	@Test 
 	public void testGetSetWord(){
 		assertEquals("word2", term2.getWord());
 		term2.setWord("word2Replaced");
 		assertEquals("word2Replaced", term2.getWord());
-		
-		term2.setWord("");
-		assertEquals("word2Replaced", term2.getWord());
+
 	}
 
 

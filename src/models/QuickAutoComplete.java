@@ -1,4 +1,4 @@
-package algorithms;
+package models;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -7,125 +7,47 @@ import java.util.*;
 
 public class QuickAutoComplete implements AutoComplete{
 
-	/*private Map<String,Double> terms=new HashMap<String,Double>(10000);
-	private TreeMap<String,Double> sortedTerms;
-	private  Scanner input= new Scanner(System.in);
-
-	public QuickAutoComplete() throws Exception {
-		readUrl();
-		sortedTerms=new TreeMap<String,Double>(terms);
-
-	}
-	public void quickRun(int suggestionNo) throws Exception{
-		System.out.println(sortedTerms.keySet());
-		matches("th",3);
-	}
-
-	@Override
-	public double weightOf(String term) {
-		return sortedTerms.get(term).doubleValue();
-	}
-
-	@Override
-	public String bestMatch(String prefix) {
-
-		return null;
-	}
-
-	@Override
-	public Iterable<String> matches(String prefix, int k) {
-		Iterator<String> matches=startBinarySearch(prefix).iterator();
-        while(matches.hasNext()){
-        	System.out.println(matches.next());
-        }
-
-
-	    return null;
-	}
-	public  void readUrl() throws Exception{
-		BufferedReader in = new BufferedReader(new InputStreamReader(new URL("https://wit-computing.github.io/algorithms-2016/topic04/book-2/data/wiktionary.txt").openStream()));
-		Scanner inTerm = new Scanner(in);
-		String delims = "[	]";//each field in the file is separated(delimited) by a space.
-		while (inTerm.hasNextLine()) {
-			// get user and rating from data source
-			String termDetails = inTerm.nextLine();
-			// parse user details string
-			String[] termTokens = termDetails.split(delims);
-
-			// output user data to console.
-			if (termTokens.length == 2) {
-				terms.put(termTokens[1].toLowerCase(),Double.parseDouble(termTokens[0].trim()));
-			}
-			else
-			{
-				if(termTokens.length!=1){
-					inTerm.close();
-					throw new Exception("Invalid member length: "+termTokens.length);
-				}
-			}
-		}
-		inTerm.close();
-	}
-	 public List<String> startBinarySearch(String key) 
-	     {
-		     List<String> keyList=new ArrayList<String>(sortedTerms.keySet());
-	          int low = 0;
-	          int high = keyList.size() - 1;
-
-	         while(high >= low) {
-	              int middle = (low + high) / 2;
-				if(keyList.get(middle).startsWith(key)) {
-					int findStartBoxIndex=middle-1;
-					while(keyList.get(findStartBoxIndex).startsWith(key)){
-						findStartBoxIndex-=1;
-
-					}
-					int findEndBoxIndex=middle-1;
-					while(keyList.get(findEndBoxIndex).startsWith(key)){
-						findEndBoxIndex+=1;
-
-					}
-	                  return keyList.subList(findStartBoxIndex+1,findEndBoxIndex);
-	              }
-	              if(keyList.get(middle).substring(0, key.length()).compareTo(key)<0) {
-	                  low = middle + 1;
-	              }
-	              if(keyList.get(middle).substring(0, key.length()).compareTo(key)>0) {
-	                  high = middle - 1;
-	              }
-	         }
-	        return keyList;
-	    }*/
-
-
 	private List<Term> terms=new ArrayList<Term>();
-	private List<Term> matches=new ArrayList<Term>();
 	private  Scanner input= new Scanner(System.in);
 
 	public QuickAutoComplete() throws Exception {
 
 	}
+	public List<Term> getTerms() {
+		return terms;
+	}
+	public void setTerms(List<Term> terms) {
+		 if (terms==null) {
+		        throw new NullPointerException("Terms is null");
+		    }
+		if (terms.size()!=0){
+			this.terms = terms;
+		}
+	}
+
 	public void quickRun(int suggestionNo) throws Exception{
-		sort(terms);
-		Iterator<String> matches;
+		sortAlphabetically(terms);
 		int option=mainMenu();
 		while(option!=2){
 			switch (option){
 			case 1: 
+				Iterator<String> matches = null;
 				System.out.println("Please enter a prefix to search for:"  );
 				input.nextLine();
 				String prefix=input.nextLine().toLowerCase();
+				if (matches(prefix,suggestionNo)!=null){
 				matches=matches(prefix,suggestionNo).iterator();
+				
 				int counter=1;
 				while(matches.hasNext()){
 					if (counter==1) {
 						System.out.println("Did you mean..");
 					}
-					System.out.println(counter+") "+matches.next());
+				System.out.println(counter+") "+matches.next());
 					counter++;
 				}
+				}
 				System.out.println("---------\nBest Match: "+bestMatch(prefix));
-				System.out.println(weightOf(prefix));
 				System.out.println("\n    ---Press any key to continue---");
 				input.nextLine();
 				option = mainMenu();
@@ -136,6 +58,7 @@ public class QuickAutoComplete implements AutoComplete{
 			}
 		}
 	}
+	
 	public int mainMenu(){
 		System.out.println(" QUICK AUTOCOMPLETE PROGRAM \n---------------------------");
 		System.out.println(" Please choose an option: \n  1) Search a prefix\n  2) Exit to main menu");
@@ -161,26 +84,48 @@ public class QuickAutoComplete implements AutoComplete{
 
 	@Override
 	public double weightOf(String term) {
+		 if (term==null) {
+		        throw new NullPointerException("Term is null");
+		    }
 		double weight=0.0;
-		for (Term termA:binarySearchForBoxOfTerms(term)){
+		List<Term> termList=binarySearchForBoxOfTerms(term);
+		if(termList!=null){
+		for (Term termA:termList){
 			if (termA.getWord().compareTo(term)==0)
 			{
 				weight= termA.getWeight();
 			}
 		}
-		return weight;
+		}
+		return weight;		
 	}
 
 	@Override
 	public String bestMatch(String prefix) {
+		 if (prefix==null) {
+		        throw new NullPointerException("Term is null");
+		    }
+		
+		if (matches(prefix,1)==null){
+			return "none";
+		}
+		else{
 		Iterator<String> itermatches=matches(prefix,1).iterator();
 		return itermatches.next();
+		}
 
 	}
 
 	@Override
 	public Iterable<String> matches(String prefix, int k) {
-		matches=binarySearchForBoxOfTerms(prefix);
+		 if (prefix==null) {
+		        throw new NullPointerException("Term is null");
+		    }
+		  if (k < 0) {
+		        throw new IllegalArgumentException("Number of suggestions should be positive");
+		    }
+		List<Term> matches=binarySearchForBoxOfTerms(prefix);
+		if(matches!=null){
 		sortWeight(matches);
 		if(matches.size()>k ){
 			matches=matches.subList(0, k);
@@ -191,11 +136,18 @@ public class QuickAutoComplete implements AutoComplete{
 		}
 		Iterable<String> matchesIter=matchesStrings;
 		return matchesIter;
+		}
+		else{
+			return null;
+		}
 	}
 
 	
 
 	public  void sortWeight(List<Term> terms2){
+		if (terms2==null) {
+	        throw new NullPointerException("Terms array is null");
+	    }
 		int N=terms2.size();
 		for (int i=0;i<N;i++){
 			int min = i;
@@ -208,7 +160,10 @@ public class QuickAutoComplete implements AutoComplete{
 	}
 
 
-	public  void sort(List<Term> terms2){
+	public  void sortAlphabetically(List<Term> terms2){
+		if (terms2==null) {
+	        throw new NullPointerException("Terms array is null");
+	    }
 		int N=terms2.size();
 		for (int i=0;i<N;i++){
 			int min = i;
@@ -220,10 +175,16 @@ public class QuickAutoComplete implements AutoComplete{
 		}
 	}
 
-	private  boolean less(String v,String w)
-	{ return v.compareTo(w)<0;}
+	private  boolean less(String v,String w){
+	if (v==null || w==null) {
+        throw new NullPointerException("Arguments are null");
+    }
+	 return v.compareTo(w)<0;}
 
 	private  void exch(List<Term> terms2,int i,int j){
+		if (terms2==null) {
+	        throw new NullPointerException("Terms array is null");
+	    }
 		Term swap=terms2.get(i);
 		terms2.set(i,terms2.get(j));
 		terms2.set(j,swap);
@@ -232,6 +193,9 @@ public class QuickAutoComplete implements AutoComplete{
 
 	public List<Term> binarySearchForBoxOfTerms(String key) 
 	{
+		if (key==null) {
+	        throw new NullPointerException("Prefix is null");
+	    }
 		int low = 0;
 		int high = terms.size() - 1;
 
@@ -268,11 +232,21 @@ public class QuickAutoComplete implements AutoComplete{
 				}
 			}
 		}
-		return terms;
+		return null;
 	}
 	public void createTerm(String weight,String word){
-		Term term= new Term(weight,word);
-		terms.add(term);
+		if (weight==null || word==null) {
+	        throw new NullPointerException("Strings are null");
+	    }
+		boolean same=false;
+		for(Term termA:terms){
+			if(termA.getWord()==word){
+				same=true;
+			}
+		}
+		if(!same){
+				Term term= new Term(weight,word);
+				terms.add(term);	
+		}
 	}
-
 }

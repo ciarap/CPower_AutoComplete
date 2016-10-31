@@ -1,4 +1,4 @@
-package algorithms;
+package models;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,6 +18,9 @@ public class BruteAutoComplete  implements AutoComplete {
 	}
 
 	public void setTerms(List<Term> terms) {
+		if (terms==null) {
+	        throw new NullPointerException("Terms array is null");
+	    }
 		if (terms.size()!=0){
 			this.terms = terms;
 		}
@@ -84,6 +87,9 @@ public class BruteAutoComplete  implements AutoComplete {
 	
 	@Override
 	public double weightOf(String term) {
+		if (term==null) {
+	        throw new NullPointerException("String is null");
+	    }
 		double weight=0.0;
 		for (Term termA:terms){
 			if (termA.getWord().compareTo(term)==0)
@@ -96,6 +102,9 @@ public class BruteAutoComplete  implements AutoComplete {
 
 	@Override
 	public String bestMatch(String prefix) {
+		if (prefix==null) {
+	        throw new NullPointerException("Term is null");
+	    }
 		String bestmatch="none";
 		for (Term term: terms){
 			if (term.getWord().startsWith(prefix)){
@@ -109,6 +118,12 @@ public class BruteAutoComplete  implements AutoComplete {
 
 	@Override
 	public Iterable<String> matches(String prefix, int k){
+		 if (prefix==null) {
+		        throw new NullPointerException("Term is null");
+		    }
+		 if (k < 0) {
+		        throw new IllegalArgumentException("Number of suggestions should be positive");
+		    }
 		List<String> matches=new ArrayList<String>();
 		for (Term term: terms){
 			if (term.getWord().startsWith(prefix)){
@@ -128,7 +143,18 @@ public class BruteAutoComplete  implements AutoComplete {
 		
 	}
 	public void createTerm(String weight,String word){
-		Term term= new Term(weight,word);
-		terms.add(term);
+		if (weight==null || word==null) {
+	        throw new NullPointerException("Strings are null");
+	    }
+		boolean same=false;
+		for(Term termA:terms){
+			if(termA.getWord()==word){
+				same=true;
+			}
+		}
+		if(!same){
+				Term term= new Term(weight,word);
+				terms.add(term);	
+		}
 	}
 }
