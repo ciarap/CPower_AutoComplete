@@ -1,6 +1,6 @@
 package algorithms;
 
-public class Term {
+public class Term implements Comparable {
 
 	private double weight;
 	private String word;
@@ -39,5 +39,14 @@ public class Term {
 	public String toString() {
 		return "Term [weight=" + weight + ", word=" + word + "]";
 	}
+	@Override
+	public int compareTo(Object that) {
+		
+		return (int) ((int) ((Term) that).getWeight()-this.weight);
+	}
+	
+
+
+	
 
 }
