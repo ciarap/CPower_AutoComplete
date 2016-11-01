@@ -1,3 +1,7 @@
+/**
+* @author Ciara Power
+* @version 01/11/16
+*/
 package models;
 
 public interface AutoComplete{
