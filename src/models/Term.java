@@ -37,7 +37,10 @@ public class Term implements Comparable {
 	 * 
 	 */
 	public void setWeight(double weight) {
-		if(weight>0){   // if weight is above 0 then set it
+		if (weight<0){  
+			throw new IllegalArgumentException("Weight is negative");
+		}
+		else if(weight>0){   // if weight is above 0 then set it
 			this.weight = weight;
 		}
 	}

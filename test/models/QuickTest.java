@@ -30,6 +30,7 @@ public class QuickTest {
 	
 	/**
 	 * getSetTerms() - This method tests the getters and setters for terms 
+	 * Test specification 1 
 	 */
 	@Test
 	public void getSetTerms(){
@@ -41,11 +42,22 @@ public class QuickTest {
 		
 		quick.setTerms(new ArrayList<Term>());  //set as empty list
 		assertEquals(3,quick.getTerms().size());  //check it didnt change 
+		
+		try   // test null argument gives exception
+		 {
+			quick.setTerms(null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 	}
 	
 	
 	/**
 	 * testWeightOf() - This method tests the weightOf() method 
+	 * Test specification 2
 	 */
 	@Test
 	public void testWeightOf(){
@@ -54,10 +66,21 @@ public class QuickTest {
 		
 		assertEquals(0.0,quick.weightOf("nonexistentTerm"),0.001); //tests for term that doesnt exist 
 		
+		try   // test null argument gives exception
+		 {
+		quick.weightOf(null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
+		
 	}
 	
 	/**
-	 * testBestMatch() - This method tests the bestmatch() method 
+	 * testBestMatch() - This method tests the bestMatch() method 
+	 * Test specification 3
 	 */
 	@Test
 	public void testBestMatch(){    //tests different prefixes, to the known best match
@@ -65,11 +88,20 @@ public class QuickTest {
 		assertEquals("def",quick.bestMatch("de"));
 		assertEquals("none",quick.bestMatch("abcde"));  // tests non existent term
 		
-		
+		try   // test null argument gives exception
+		 {
+			quick.bestMatch(null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 	}
 	
 	/**
-	 * testMatches() - This method tests the matches() method 
+	 * testMatches() - This method tests the matches() method
+	 * Test specification 4 
 	 */
 
 	@Test
@@ -77,10 +109,31 @@ public class QuickTest {
 		assertEquals(Arrays.asList("eleven","elevation"),quick.matches("elev", 2));  //tests sublist only contains the required amount of matches
 		assertEquals(Arrays.asList("eleven","elevation","elevated","eleventh"),quick.matches("elev", 10000)); //checks all matches are returned if we ask for more to be returned than there are matches
 		assertEquals(null,quick.matches("abcde", 2));  //tests empty array if no matches
+		
+		try   // test null argument gives exception
+		 {
+		 quick.matches(null,4);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
+		
+		try   // test k<0 argument gives exception
+		 {
+		 quick.matches("el",-3);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 	}
 	
 	/**
 	 * testCreateTerm() - This method tests the createTerm() method 
+	 * Test specification 5
 	 */
 	@Test
 	public void testCreateTerm(){
@@ -96,10 +149,32 @@ public class QuickTest {
 		quick.createTerm("20", "second");  //create term that is the same as term already in list
 		assertEquals(2,quick.getTerms().size());//the new term shouldnt be created and added to list, as no duplicates wanted
 		
+		try   // test null argument gives exception
+		 {
+		 quick.createTerm(null,"word");
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
+		
+		try   // test null argument gives exception
+		 {
+		 quick.createTerm("weight",null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
+		
+		
 	}
 	
 	/**
-	 * testsortWeight() - This method tests the sortWeight() method 
+	 * testsortWeight() - This method tests the sortWeight() method, and also the  exch() method,as it is key in this sort method working 
+	 * Test specification 6
 	 */
 	@Test
 	public void testSortWeight(){
@@ -111,10 +186,21 @@ public class QuickTest {
 		assertEquals(30.0,weightTerms.get(0).getWeight(),0.001);  //check all values now sorted high to low
 		assertEquals(20.0,weightTerms.get(1).getWeight(),0.001);
 		assertEquals(10.0,weightTerms.get(2).getWeight(),0.001);
+		
+		try   // test null argument gives exception
+		 {
+			quick.sortWeight(null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 	}
 	
 	/**
-	 * testsortAlphabetically() - This method tests the sortAlphabetically() method 
+	 * testsortAlphabetically() - This method tests the sortAlphabetically() method, and also the less() and exch() methods,as they are key in this sort method working 
+	 * Test specification 7
 	 */
 	@Test
 	public void testSortAlphabetically(){
@@ -126,15 +212,36 @@ public class QuickTest {
 		assertEquals("a",wordTerms.get(0).getWord());  //check all values now sorted alphabetically
 		assertEquals("b",wordTerms.get(1).getWord());
 		assertEquals("c",wordTerms.get(2).getWord());
+		
+		try   // test null argument gives exception
+		 {
+			quick.sortAlphabetically(null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 	}
 	
 	/**
 	 * testBinarySearch() - This method tests the binarySearchForBoxOfTerms() method 
+	 * Test specification 8
 	 */
 	@Test
 	public void testBinarySearch(){
 		assertEquals(2,quick.binarySearchForBoxOfTerms("thereo").size(),0.001);  //check list returned size with matches
 		assertEquals(null,quick.binarySearchForBoxOfTerms("abcde"));   //check for no matches
+		
+		try   // test null argument gives exception
+		 {
+			quick.binarySearchForBoxOfTerms(null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 	}
 
 

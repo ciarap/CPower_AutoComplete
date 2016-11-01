@@ -29,6 +29,7 @@ public class BruteTest {
 	
 	/**
 	 * getSetTerms() - This method tests the getters and setters for terms 
+	 * Test specification 1 
 	 */
 	@Test
 	public void getSetTerms(){
@@ -40,10 +41,21 @@ public class BruteTest {
 		
 		brute.setTerms(new ArrayList<Term>());    //set as empty list
 		assertEquals(3,brute.getTerms().size());   //check it didnt change 
+		
+		try   // test null argument gives exception
+		 {
+			brute.setTerms(null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 	}
 	
 	/**
 	 * testWeightOf() - This method tests the weightOf() method 
+	 * Test specification 2
 	 */
 	@Test
 	public void testWeightOf(){
@@ -52,10 +64,21 @@ public class BruteTest {
 		
 		assertEquals(0.0,brute.weightOf("nonexistentTerm"),0.001);   //tests for term that doesnt exist 
 		
+		try   // test null argument gives exception
+		 {
+		brute.weightOf(null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
+		
 	}
 	
 	/**
-	 * testBestMatch() - This method tests the bestmatch() method 
+	 * testBestMatch() - This method tests the bestMatch() method 
+	 * Test specification 3 
 	 */
 	@Test
 	public void testBestMatch(){     //tests different prefixes, to the known best match
@@ -63,11 +86,20 @@ public class BruteTest {
 		assertEquals("def",brute.bestMatch("de"));
 		assertEquals("none",brute.bestMatch("abcde"));   // tests non existent term
 		
-		
+		try   // test null argument gives exception
+		 {
+			brute.bestMatch(null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 	}
 
 	/**
 	 * testMatches() - This method tests the matches() method 
+	 * Test specification 4
 	 */
 
 	@Test
@@ -75,10 +107,31 @@ public class BruteTest {
 		assertEquals(Arrays.asList("eleven","elevation"),brute.matches("elev", 2));  //tests sublist only contains the required amount of matches
 		assertEquals(Arrays.asList("eleven","elevation","elevated","eleventh"),brute.matches("elev", 10000)); //checks all matches are returned if we ask for more to be returned than there are matches
 		assertEquals(Arrays.asList(),brute.matches("abcde", 2));   //tests empty array if no matches
+		
+		try   // test null argument gives exception
+		 {
+		 brute.matches(null,4);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
+		
+		try   // test k<0 argument gives exception
+		 {
+		 brute.matches("el",-3);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 	}
 	
 	/**
-	 * testCreateTerm() - This method tests the createTerm() method 
+	 * testCreateTerm() - This method tests the createTerm() method
+	 * Test specification 5 
 	 */
 
 	@Test
@@ -94,6 +147,26 @@ public class BruteTest {
 		
 		brute.createTerm("20", "second");    //create term that is the same as term already in list
 		assertEquals(2,brute.getTerms().size());   //the new term shouldnt be created and added to list, as no duplicates wanted
+		
+		try   // test null argument gives exception
+		 {
+		 brute.createTerm(null,"word");
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
+		
+		try   // test null argument gives exception
+		 {
+		 brute.createTerm("weight",null);
+		 fail("Should throw exception");
+		 }
+		 catch (Exception e)
+		 {
+		 assertTrue(true);
+		 }
 		
 	}
 	
